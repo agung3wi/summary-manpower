@@ -133,6 +133,7 @@ class SummaryDaily extends Command
         LEFT JOIN pekerja_belum_covid M ON M.proyek_id = A.id
         LEFT JOIN pekerja_vaksin N ON N.proyek_id = A.id
         LEFT JOIN pekerja_belum_vaksin O ON O.proyek_id = A.id");
+        $dataProyek = json_encode($proyekList);
         foreach ($proyekList as $proyek) {
             $proyek->summary = DB::select("WITH summary AS (
                 SELECT A.tipe_pekerja_id, COUNT(1) AS total
@@ -148,6 +149,6 @@ class SummaryDaily extends Command
             file_put_contents(public_path("rekap/" . $proyek->id . ".json"), json_encode($proyek));
             file_put_contents(public_path("rekap/" . $proyek->nama_pendek_proyek . ".json"), json_encode($proyek));
         }
-        file_put_contents(public_path("rekap/proyek.json"), json_encode($proyekList));
+        file_put_contents(public_path("rekap/proyek.json"), $dataProyek);
     }
 }
